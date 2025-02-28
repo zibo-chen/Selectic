@@ -2,6 +2,12 @@
 name = "selectic"
 version = "0.1.0"
 edition = "2021"
+authors = ["ChenZibo <qw.54@163.com>"]
+description = "Selectic is a Rust library that provides a cross-platform way to retrieve user-selected content from the operating system. Currently, it focuses on obtaining selected text, but it is designed to be extensible to handle other types of selected content like images and files in the future."
+readme = "README.md"
+repository = "https://github.com/zibo-chen/Selectic"
+license = "MIT"
+
 
 [dependencies]
 log = "0.4"
