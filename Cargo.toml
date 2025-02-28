@@ -1,0 +1,27 @@
+[package]
+name = "selectic"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+log = "0.4"
+thiserror = "1.0"
+
+# Conditional dependencies for macOS
+[target.'cfg(target_os = "macos")'.dependencies]
+accessibility-ng = "0.1"
+accessibility-sys-ng = "0.1"
+core-foundation = "0.9"
+
+# Conditional dependencies for Windows
+[target.'cfg(target_os = "windows")'.dependencies]
+winapi = { version = "0.3", features = ["winuser"] }
+clipboard-win = "4.5"
+
+# Conditional dependencies for Linux
+[target.'cfg(target_os = "linux")'.dependencies]
+# Add AT-SPI2 bindings if available
+# For now we rely on command-line tools
+
+[dev-dependencies]
+simple_logger = "4.0"
