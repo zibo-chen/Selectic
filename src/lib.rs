@@ -17,8 +17,6 @@ pub mod linux;
 pub enum ContentType {
     /// Plain text content
     Text,
-    /// Image data with format specification
-    Image(String), // Format (e.g., "png", "jpg")
     /// File path(s)
     File,
     /// Other types of content with format specification
@@ -29,7 +27,6 @@ impl fmt::Display for ContentType {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             ContentType::Text => write!(f, "text"),
-            ContentType::Image(format) => write!(f, "image/{}", format),
             ContentType::File => write!(f, "file"),
             ContentType::Other(format) => write!(f, "other/{}", format),
         }
@@ -51,14 +48,6 @@ impl Selection {
         Self {
             content_type: ContentType::Text,
             data: text.into_bytes(),
-        }
-    }
-
-    /// Create a new image selection
-    pub fn new_image(format: &str, data: Vec<u8>) -> Self {
-        Self {
-            content_type: ContentType::Image(format.to_string()),
-            data,
         }
     }
 
@@ -106,12 +95,6 @@ impl Selection {
 pub trait Selector {
     /// Get the currently selected content using the best available method
     fn get_selection(&self) -> Result<Selection, SelectionError>;
-
-    /// Get the currently selected content using accessibility APIs
-    fn get_selection_by_accessibility(&self) -> Result<Selection, SelectionError>;
-
-    /// Get the currently selected content using clipboard
-    fn get_selection_by_clipboard(&self) -> Result<Selection, SelectionError>;
 }
 
 /// Main function to get user's current selection
@@ -181,30 +164,6 @@ mod tests {
         assert!(!selection.is_empty());
     }
 
-    #[test]
-    fn test_selection_empty() {
-        let selection = Selection::new_text(String::new());
-        assert!(selection.is_empty());
-
-        let selection = Selection::new_image("png", vec![]);
-        assert!(selection.is_empty());
-    }
-
-    // Test ContentType display implementation
-    #[test]
-    fn test_content_type_display() {
-        assert_eq!(ContentType::Text.to_string(), "text");
-        assert_eq!(
-            ContentType::Image("png".to_string()).to_string(),
-            "image/png"
-        );
-        assert_eq!(ContentType::File.to_string(), "file");
-        assert_eq!(
-            ContentType::Other("custom".to_string()).to_string(),
-            "other/custom"
-        );
-    }
-
     // Test the get_text convenience function with mocks
     #[test]
     fn test_get_text_function() {
@@ -221,21 +180,6 @@ mod tests {
 
         assert!(text_result.is_ok());
         assert_eq!(text_result.unwrap(), text);
-
-        // Test with non-text selection
-        let selection = Selection::new_image("png", vec![1, 2, 3]);
-
-        let text_result = selection
-            .as_text()
-            .ok_or(SelectionError::InvalidContentType {
-                expected: "text".to_string(),
-                received: selection.content_type.to_string(),
-            });
-
-        assert!(matches!(text_result,
-            Err(SelectionError::InvalidContentType { expected, received })
-            if expected == "text" && received == "image/png"
-        ));
     }
 
     // Integration test with mocked platform detection
