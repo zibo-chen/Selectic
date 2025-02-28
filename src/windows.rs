@@ -38,6 +38,12 @@ impl Selector for WindowsSelector {
     }
 }
 
+impl Default for WindowsSelector {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 fn init_com() {
     COM_INIT.call_once(|| {
         let hr = unsafe { CoInitializeEx(None, COINIT_APARTMENTTHREADED) };

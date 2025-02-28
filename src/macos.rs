@@ -18,6 +18,12 @@ impl MacOSSelector {
     }
 }
 
+impl Default for MacOSSelector {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Selector for MacOSSelector {
     /// Get user selection using the best available method for macOS
     fn get_selection(&self) -> Result<Selection, SelectionError> {
