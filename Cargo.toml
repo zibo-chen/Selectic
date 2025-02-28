@@ -35,8 +35,8 @@ arboard = "3.4.1"
 
 # Conditional dependencies for Linux
 [target.'cfg(target_os = "linux")'.dependencies]
-# Add AT-SPI2 bindings if available
-# For now we rely on command-line tools
+x11-clipboard = "0.9.3"
+wl-clipboard-rs = "0.9.1"
 
 [dev-dependencies]
 simple_logger = "4.0"
