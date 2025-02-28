@@ -1,4 +1,6 @@
+#[cfg(target_os = "macos")]
 use accessibility_ng::Error as AccessibilityErrorNg;
+
 use thiserror::Error;
 
 #[derive(Error, Debug)]
@@ -46,6 +48,7 @@ impl From<&str> for SelectionError {
     }
 }
 
+#[cfg(target_os = "macos")]
 impl From<AccessibilityErrorNg> for SelectionError {
     fn from(error: AccessibilityErrorNg) -> Self {
         SelectionError::AccessibilityError(error.to_string())

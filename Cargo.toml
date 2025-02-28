@@ -15,8 +15,17 @@ core-foundation = "0.9"
 
 # Conditional dependencies for Windows
 [target.'cfg(target_os = "windows")'.dependencies]
-winapi = { version = "0.3", features = ["winuser"] }
-clipboard-win = "4.5"
+windows = { version = "0.58.0", features = [
+    "Win32_UI_WindowsAndMessaging",
+    "Win32_Foundation",
+    "Win32_System_Threading",
+    "Win32_UI_Input_KeyboardAndMouse",
+    "Win32_System_DataExchange",
+    "Win32_UI_Accessibility",
+    "Win32_System_Com",
+] }
+enigo = "0.3.0"
+arboard = "3.4.1"
 
 # Conditional dependencies for Linux
 [target.'cfg(target_os = "linux")'.dependencies]
